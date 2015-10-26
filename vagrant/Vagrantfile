@@ -1,0 +1,15 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure 2 do |configuration|
+  configuration.vm.network "private_network", type: "dhcp"
+
+  configuration.vm.provider "docker" do |container|
+    container.name = 'server'
+    container.build_dir = '.'
+    container.create_args = ['--cap-add=SYS_MODULE',
+        '--cap-add=NET_ADMIN', '--cap-add=SYS_CHROOT']
+    container.remains_running = true
+    container.has_ssh = true
+  end
+end
