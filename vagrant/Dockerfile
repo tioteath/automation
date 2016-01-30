@@ -6,7 +6,7 @@ FROM ubuntu:trusty
 ENV container docker
 ENV DEBIAN_FRONTEND noninteractive
 ENV NOTVISIBLE "in users profile"
-EXPOSE 22
+EXPOSE 20-60179
 
 RUN  printf -- 'description     "In-Container Upstart Fake Events"\n\n \
 start on startup\n\n \
@@ -33,8 +33,7 @@ RUN set -e; \
         mkdir .ssh; \
         curl --silent \
         https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub \
-        > .ssh/authorized_keys' \
-        -- vagrant; \
+        > .ssh/authorized_keys' -- vagrant; \
     umask 0077 && printf -- 'vagrant ALL=(ALL) NOPASSWD: ALL' \
         > /etc/sudoers.d/vagrant; \
     printf -- "export VISIBLE=now" >> /etc/profile; \

@@ -8,7 +8,7 @@ Vagrant.configure 2 do |configuration|
     container.name = 'server'
     container.build_dir = '.'
     container.create_args = ['--cap-add=SYS_MODULE',
-        '--cap-add=NET_ADMIN', '--cap-add=SYS_CHROOT']
+        '--cap-add=NET_ADMIN', '--cap-add=SYS_CHROOT', '--cap-add=CHOWN']
     container.remains_running = true
     container.has_ssh = true
   end
