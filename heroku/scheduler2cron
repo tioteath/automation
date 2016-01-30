@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+puts "Convert heroku scheduler jobs to crontab\n\n" \
+     "Usage:\ncat Heroku\\ Scheduler.html | #{__FILE__}\n" or
+     exit if ARGV.include? "--help"
+
+
+require 'nokogumbo'
+
+document = Nokogiri::HTML5.fragment STDIN.read
+
+document.search('div.item_well').each do |element|
+  begin
+    command = element.search('input[name=command]').first[:value]
+    fuzzy_timespec = element.search('div.frequency span.not-on-edit').first.text
+  rescue NoMethodError
+  else
+    timespec = case fuzzy_timespec
+      when /Daily/
+        "@daily"
+      when /Hourly/
+        "@hourly"
+      when /Every\s*(\d{1,2})\s*minutes/
+        "*/#{$1} * * * *"
+      else
+        "* * * * *"
+    end
+    puts "#{timespec.ljust 13} #{command}"
+  end
+end
